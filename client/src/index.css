@@ -2,9 +2,11 @@
   box-sizing: border-box;
 }
 .centered {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 }
 
 body {
