@@ -8,16 +8,16 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 export default function Register() {
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
   const [errors, setErrors] = useState(null);
 
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+    password_confirmation: '',
   });
 
-  const { username, password } = formData;
+  const { username, password, password_confirmation } = formData;
 
   const history = useHistory();
   let setUser = '';
@@ -29,15 +29,19 @@ export default function Register() {
     }));
   };
 
-  const handleRegister = async (registerData) => {
-    if (password !== passwordConfirm) {
-      return setErrors((prevState) => ({
-        ...prevState,
-
-        'password and password confirm': 'do not match!',
-      }));
+  const handleError = (property, error) => {
+    if (property.includes('username')) {
+      property.replace('username', 'username / email');
     }
 
+    if (property.includes('password_confirmation')) {
+      property.replace('password_confirmation', 'password confirm');
+    }
+
+    return `${property} ${error}`;
+  };
+
+  const handleRegister = async (registerData) => {
     const userData = await registerUser(registerData);
 
     history.push('/');
@@ -68,25 +72,22 @@ export default function Register() {
               container
               direction="column"
               justify="center"
+              spacing={2}
               style={{
                 margin: '0 auto',
-                maxWidth: '30em',
+                maxWidth: '60em',
                 padding: '20px',
-                backgroundColor: 'red',
+                color: '#000',
               }}>
-              {/* gotta love ruby hashes <3 */}
-              {Object.entries(errors).map(([property, error]) => (
-                <Grid>
-                  <Typography style={{ color: 'white' }}>
-                    {`Error: ${
-                      property.includes('username')
-                        ? property.replace('username', 'username / email')
-                        : property
-                    } ${error}`}
-                  </Typography>
-                  <br />
-                </Grid>
-              ))}
+              <ul style={{ textAlign: 'left' }}>
+                {/* gotta love ruby hashes <3 */}
+                {Object.entries(errors).map(([property, error]) => (
+                  <li style={{ color: 'red', listStyleType: 'none' }}>
+                    <span style={{ color: 'red' }}> * </span>
+                    {handleError(property, error)}
+                  </li>
+                ))}
+              </ul>
             </Grid>
           ) : (
             <></>
@@ -125,11 +126,11 @@ export default function Register() {
           <Grid item>
             <Input
               fullWidth
-              name="passwordConfirm"
-              value={passwordConfirm}
+              name="password_confirmation"
+              value={password_confirmation}
               placeholder="password confirm"
               type={isPasswordShowing ? 'text' : 'password'}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
+              onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
