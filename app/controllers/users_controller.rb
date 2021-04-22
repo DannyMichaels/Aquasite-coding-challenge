@@ -1,17 +1,19 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: [:create, :index, :show]
   before_action :set_user, except: [:create, :index]
-  
-  # GET /users
-  def index
-    @users = User.all
+  before_action :can_modify?, only:[:update, :destroy]
 
-    render json: @users
+  def index
+    # show all users, but order by created_at ascending
+    # another example:  @users = User.order('name ASC'), order by name ascending.
+    @users = User.order('created_at ASC')
+    # render the users but down show password digest and updated at (even if hashed)                        # Mapping through the user to get the likes, mapping through the likes to get the insight name.                                                                     
+    render json: @users.map {|u| u.attributes.except("password_digest")}
   end
 
-  # GET /users/1
   def show
-    render json: @user
+    # getting the user, and his insights, except the insight's user_id, because we already get that when we render the user.
+    render json: @user.attributes.except('password_digest')
   end
 
   # POST /users
@@ -19,33 +21,47 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      @token = encode({id: @user.id})
+      render json: {
+        user: @user.attributes.except('password_digest', 'updated_at'), 
+        token: @token
+        }, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
+    if can_modify?
+      if @user.update(user_params)
+        render json: @user.attributes.except('password_digest', 'created_at'), status: :ok
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
+    else 
+      render json: {error: "Unauthorized action"}, status: :unauthorized
     end
   end
 
-  # DELETE /users/1
+
   def destroy
-    @user.destroy
+   if can_modify? 
+    @user.destroy!
+   else 
+    render json: {error: "Unauthorized action"}, status: :unauthorized
+   end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def can_modify?
+      @current_user.id.to_i == params[:id].to_i
+    end
+    # Only allow a trusted parameter "white list" through.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def user_params
       params.require(:user).permit(:username, :password, :flow, :pressure)
     end
