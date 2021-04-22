@@ -1,9 +1,12 @@
-Aquasight off line Coding Challenge 
+# Aquasight off line Coding Challenge 
+
 Create an Application with User Interface (Front - end) and Back-end API. User Interface (FRONT-END) Requirements: 
-Tech Stack: 
+
+# Tech Stack: 
 1. Use any web framework is your preference (Preferable Angular) 
 2. Responsive Web Pages and Components (required) 
-Views: 
+
+# Views: 
 1. Login page 
 • Login Form fields Username (‘admin@example.com’) and Password (‘password’) • Login Button 
 • Show Form Validations on login form (e.g.: Invalid email) 
@@ -26,9 +29,10 @@ ii) After Submit Button(event),
 (a) X-axis display Time Stamp, Y-axis show Flow, Pressure. 
 (b) New Data Loading Animations. 
 (c) Expand Chart on popup dialog. 
-(d) Close Button Chart Expand. 
-Backend (API) Requirements: 
-Tech Stack: 
+(d) Close Button Chart Expand
+
+# Backend (API) Requirements: 
+# Tech Stack: 
 1. Use any API framework is your preference (e.g.: python/Django/Flask,  Java/Spring/Hibernate, Nodejs/Express/Socket.io)
 2. Use Any Data Structure SQL or NoSQL (e.g.: MySQL, mongo, Cassandra, Redis) Database: 
 1. Create a Table with Columns  
@@ -36,7 +40,7 @@ a. Id (autoincrement),
 b. Time_stamp (date time), 
 c. Flow (double), 
 d. Pressure (double) 
-API 
+# API 
 1) POST method 
 a) Write a Row into Table 
 b) Catch Error Handling (200, 400 and 500) 
