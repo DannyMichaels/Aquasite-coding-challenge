@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :authorize_request, except: [:create, :index, :show]
   before_action :set_user, except: [:create, :index]
   before_action :can_modify?, only:[:update, :destroy]
+  wrap_parameters :user, include: [:username, :password]
 
   def index
     # show all users, but order by created_at ascending
@@ -63,6 +64,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:username, :password, :flow, :pressure)
+      params.require( :user ).permit( :password, :username, :flow, :pressure)
     end
+    
 end
