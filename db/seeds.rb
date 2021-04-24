@@ -8,7 +8,7 @@
 
 User.destroy_all
 
-@user1 = User.create(username: "daniel@email.com", password: "12345678", flow: 12, pressure: 10)
-@user2 = User.create(username: "bob@email.com", password: "12345678", flow: 11, pressure: 8)
+@user1 = User.create!(username: "daniel@email.com", password: "12345678", flow: 12, pressure: 10)
+@user2 = User.create!(username: "bob@email.com", password: "12345678", flow: 11, pressure: 8)
 
 puts "#{User.count} users created!"

@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   validates :username, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true 
   validates :password, length: { minimum: 6 }
-  validates_presence_of :password_confirmation
+  validates_confirmation_of :password
 
   before_save :downcase_username
 

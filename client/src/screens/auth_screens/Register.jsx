@@ -2,12 +2,21 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { registerUser } from '../../services/auth';
 import Input from '@material-ui/core/Input';
-import Typography from '@material-ui/core/Typography';
-import { Button, Grid, IconButton, InputAdornment } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Typography,
+} from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { useStateValue } from '../../context/currentUser';
+import { Link } from 'react-router-dom';
 
 export default function Register() {
+  const [, dispatch] = useStateValue();
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
   const [errors, setErrors] = useState(null);
 
@@ -20,7 +29,6 @@ export default function Register() {
   const { username, password, password_confirmation } = formData;
 
   const history = useHistory();
-  let setUser = '';
 
   const handleChange = ({ target: { name, value } }) => {
     setFormData((prevState) => ({
@@ -43,8 +51,9 @@ export default function Register() {
 
   const handleRegister = async (registerData) => {
     const userData = await registerUser(registerData);
+    dispatch({ type: 'SET_USER', currentUser: userData });
 
-    history.push('/');
+    history.push('/form');
   };
 
   const handleSubmit = async (e) => {
@@ -58,8 +67,11 @@ export default function Register() {
   };
 
   return (
-    <div className="centered">
+    <Grid container direction="column" className="centered">
       <form onSubmit={handleSubmit}>
+        <Typography align="center" gutterBottom variant="h1">
+          Register
+        </Typography>
         <Grid
           container
           direction="column"
@@ -153,6 +165,9 @@ export default function Register() {
           </Grid>
         </Grid>
       </form>
-    </div>
+      <Box my={2}>
+        <Link to="/login">Go to Login</Link>
+      </Box>
+    </Grid>
   );
 }
