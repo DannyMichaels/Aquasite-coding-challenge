@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { registerUser } from '../../services/auth';
 import Input from '@material-ui/core/Input';
 import {
   Box,
@@ -12,11 +11,9 @@ import {
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { useStateValue } from '../../context/currentUser';
 import { Link } from 'react-router-dom';
 
 export default function Register() {
-  const [{ currentUser }, dispatch] = useStateValue();
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
   const [errors, setErrors] = useState(null);
 
