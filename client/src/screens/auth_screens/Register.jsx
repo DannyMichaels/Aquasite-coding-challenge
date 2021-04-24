@@ -16,7 +16,7 @@ import { useStateValue } from '../../context/currentUser';
 import { Link } from 'react-router-dom';
 
 export default function Register() {
-  const [, dispatch] = useStateValue();
+  const [{ currentUser }, dispatch] = useStateValue();
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
   const [errors, setErrors] = useState(null);
 
@@ -50,17 +50,25 @@ export default function Register() {
   };
 
   const handleRegister = async (registerData) => {
-    const userData = await registerUser(registerData);
-    dispatch({ type: 'SET_USER', currentUser: userData });
-
-    history.push('/form');
+    history.push({
+      pathname: '/form',
+      state: {
+        dataProps: {
+          ...registerData,
+        },
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const userData = {
+      ...formData,
+    };
+
     try {
-      await handleRegister(formData);
+      await handleRegister(userData);
     } catch (err) {
       setErrors(err.response.data);
     }
@@ -111,6 +119,7 @@ export default function Register() {
               value={username}
               placeholder="username / email"
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item>
@@ -121,6 +130,7 @@ export default function Register() {
               placeholder="password"
               type={isPasswordShowing ? 'text' : 'password'}
               onChange={handleChange}
+              required
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -143,6 +153,7 @@ export default function Register() {
               placeholder="password confirm"
               type={isPasswordShowing ? 'text' : 'password'}
               onChange={handleChange}
+              required
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

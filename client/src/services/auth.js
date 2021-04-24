@@ -36,6 +36,33 @@ export const verifyUser = async () => {
   return null;
 };
 
+export const putUser = async (id, userData) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const resp = await api.put(
+      `/users/${id}`,
+      { user: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOneUser = async (id) => {
+  try {
+    const resp = await api.get(`/users/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeToken = () => {
   api.defaults.headers.common.authorization = null;
 };

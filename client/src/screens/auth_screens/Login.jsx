@@ -68,6 +68,7 @@ export default function Login() {
             name="username"
             value={formData.username}
             onChange={handleChange}
+            required
           />
         </div>
         <br />
@@ -80,6 +81,7 @@ export default function Login() {
             type={isPasswordShowing ? 'text' : 'password'}
             value={formData.password}
             onChange={handleChange}
+            required
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -103,7 +105,7 @@ export default function Login() {
         </Grid>
       </form>
       <Box my={2}>
-        <Link to="/login">Go to Login</Link>
+        <Link to="/register">Go to Register</Link>
       </Box>
     </Grid>
   );
