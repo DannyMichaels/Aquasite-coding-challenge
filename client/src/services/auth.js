@@ -63,6 +63,15 @@ export const getOneUser = async (id) => {
   }
 };
 
+export const getAllUsers = async () => {
+  try {
+    const resp = await api.get('/users');
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeToken = () => {
   api.defaults.headers.common.authorization = null;
 };
