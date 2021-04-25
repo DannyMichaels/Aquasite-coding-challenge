@@ -162,6 +162,7 @@ export default function Register() {
         }
       }, 3000);
     },
+    //eslint-disable-next-line
     [errAmt, errors, history, formData]
   );
 
